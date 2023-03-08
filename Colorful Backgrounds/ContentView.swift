@@ -206,7 +206,7 @@ struct ContentView: View {
                             .stroke(Color.clear)
                             .background(Color.black.opacity(0.2).cornerRadius(8)))
                         .textFieldStyle(PlainTextFieldStyle())
-                    Button("Copy render") {
+                    Button((gifFrames?.count ?? 0) > 1 ? "Copy GIF" : "Copy render") {
                         if gif != nil && gifFrames != nil && (gifFrames?.count ?? 0) > 1 {
                             Task {
                                 gifExportProgress = 0.0
@@ -241,16 +241,18 @@ struct ContentView: View {
                                         }
                                         gifExportState = .exportFile
                                         do {
-                                            animatedGif(from: frames, to: URL(fileURLWithPath: "/Users/ade/Downloads/gifstest/test.gif"), speed: gifSpeed)
+                                            let exportPath: URL = getDocumentsDirectory().appendingPathComponent("ColorfulBackgrounds-GIF_Export.gif")
+                                            animatedGif(from: frames, to: exportPath, speed: gifSpeed)
+                                            let pasteboard = NSPasteboard.general
+                                            pasteboard.clearContents()
+                                            pasteboard.setString(exportPath.path(), forType: .fileURL)
                                             gifExportState = .done
                                             sleep(1)
                                             showExportSheet.toggle()
                                             gifExportState = .none
                                         } catch {print(error)}
         //                                let encodedGif = try! gif.encoded()
-        //                                let pasteboard = NSPasteboard.general
-        //                                pasteboard.clearContents()
-        //                                pasteboard.writeObjects([encodedGif as! any NSPasteboardWriting])
+                                        
                                     }
                                     
                                     

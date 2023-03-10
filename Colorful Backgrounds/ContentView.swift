@@ -10,7 +10,7 @@ import Alamofire
 import SwiftyJSON
 import GIFImage
 
-enum exportGifState {
+enum exportGifState: String {
     case none
     case starting
     case calculatingFrames
@@ -32,7 +32,7 @@ struct ContentView: View {
     @State var titleText: String = ""
     @State var subtitleText: String = ""
     
-    @State var gifExportProgress = 0.0
+    @State var gifExportProgress: Double = 100.0
     @State var showExportSheet = false
     @State var gifExportState: exportGifState = .none
     
@@ -96,6 +96,7 @@ struct ContentView: View {
                     case .starting:
                         ProgressView("Starting...")
                     case .calculatingFrames:
+                        Text("dfsdfdf")
                         ProgressView("Encoding frames…", value: gifExportProgress, total: 100)
                     case .exportFile:
                         ProgressView("Exporting file...")
@@ -125,7 +126,7 @@ struct ContentView: View {
                                 Form {
                                     Section("Values") {
                                         Slider(value: $gifSpeed, in: 0.0001...0.1, label: {
-                                            Label("Gif speed", systemImage: "circle")
+                                            Label("Frame time", systemImage: "circle")
                                                 .labelStyle(.titleOnly)
                                                 .frame(width: 70, alignment: .leading)
                                         }).frame(width: 250)
@@ -226,6 +227,7 @@ struct ContentView: View {
                                     DispatchQueue.global().async {
                                         var frames: [CGImage] = []
                                         gifExportState = .calculatingFrames
+                                        print("calcframe")
                                         for frame in gifFrames! {
                                             do {
                                                 let image = try overlayImage(background: nsImage, overlay: frame, overlaySizeRatio: gifSize)
@@ -233,7 +235,9 @@ struct ContentView: View {
                                                 let pasteboard = NSPasteboard.general
                                                 pasteboard.clearContents()
         //                                        pasteboard.writeObjects([frame])
+                                                print("add \(Double(100/gifFrames!.count))")
                                                 gifExportProgress += Double(100/gifFrames!.count)
+                                                print(gifExportState.rawValue)
                                             } catch {
                                                 print(error)
                                             }
@@ -273,10 +277,12 @@ struct ContentView: View {
                                                 .font(.system(size: subtitleText != "" ? max(Double(height)/5, Double(height)/5) : max(Double(height)/3, Double(height)/3)))
                                                 .bold()
                                                 .multilineTextAlignment(.center)
+                                                .foregroundColor(.white)
                                             if subtitleText != "" {
                                                 Text(subtitleText)
                                                     .font(.system(size: 25))
                                                     .multilineTextAlignment(.center)
+                                                    .foregroundColor(.white)
                                             }
                                         }.padding()
                                     } else if gifFrames != nil {
@@ -309,7 +315,7 @@ struct ContentView: View {
                         .buttonStyle(PlainButtonStyle())
                     
                     Button(action: {
-                        colors = []
+                        var tempColors: [Color] = []
                         
                         let body: [String:Any] = [
                             "model": model
@@ -325,9 +331,10 @@ struct ContentView: View {
                                             
                                             let color = NSColor(red: CGFloat(color[0].floatValue), green: CGFloat(color[1].floatValue), blue: CGFloat(color[2].floatValue), alpha: CGFloat(1))
             //                                let color = Color(red: color[0].doubleValue, green: color[1].doubleValue, blue: color[2].doubleValue)
-                                            colors.append(Color(nsColor: color))
+                                            tempColors.append(Color(nsColor: color))
                                         }
                                     }
+                                    colors = tempColors
                                 } else {
                                     print(response.error)
                                 }

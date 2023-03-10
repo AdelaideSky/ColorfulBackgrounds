@@ -61,6 +61,9 @@
 		703D896129B690B600D9AAAB /* Colorful Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				70F186CA29BA5C7F001CDFF8 /* Utils */,
+				70F186C929BA5C77001CDFF8 /* ViewModels */,
+				70F186C829BA5C72001CDFF8 /* Views */,
 				703D897A29B6999400D9AAAB /* Info.plist */,
 				703D896229B690B600D9AAAB /* ColorfulBackgroundsApp.swift */,
 				703D896429B690B600D9AAAB /* ContentView.swift */,
@@ -78,6 +81,27 @@
 				703D896929B690B800D9AAAB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		70F186C829BA5C72001CDFF8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		70F186C929BA5C77001CDFF8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		70F186CA29BA5C7F001CDFF8 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,7 +317,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Colorful Backgrounds/Preview Content\"";
-				DEVELOPMENT_TEAM = 2CPY2SAJ3X;
+				DEVELOPMENT_TEAM = V2737Q4C7F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -324,7 +348,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Colorful Backgrounds/Preview Content\"";
-				DEVELOPMENT_TEAM = 2CPY2SAJ3X;
+				DEVELOPMENT_TEAM = V2737Q4C7F;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

@@ -9,6 +9,8 @@ import SwiftUI
 import Alamofire
 import SwiftyJSON
 import GIFImage
+import SkyKit_Design
+import DominantColor
 
 enum exportGifState: String {
     case none
@@ -17,7 +19,97 @@ enum exportGifState: String {
     case exportFile
     case done
 }
+
 struct ContentView: View {
+    @State var showingInspector: Bool = true
+    @ObservedObject var appSettings = AppSettings.shared
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        CanvasView()
+            .dropDestination(for: Data.self) { items, location in
+                    guard let item = items.first else { return false }
+                    appSettings.gif = GIFImage(source: .static(data: item), animate: true, loop: true)
+                    appSettings.gifFrames = item.gifFrames()
+                    print(appSettings.gifFrames)
+                    return true
+                }
+            .inspector(isPresented: $showingInspector) {
+                InspectorView()
+                    .inspectorColumnWidth(min: 250, ideal: 300, max: 400)
+            }
+            .toolbar {
+                Spacer()
+                Button(action: {
+                    if (appSettings.gifFrames ?? []).count < 1 {
+                        snapshot()
+                    } else {
+                        exportGif()
+                    }
+                }, label: {
+                    HStack {
+                        Label((appSettings.gifFrames ?? []).count < 1 ? "Copy image" : "Copy GIF", systemImage: "")
+                            .labelStyle(.titleOnly)
+                        if appSettings.isExporting {
+                            ProgressView().scaleEffect(0.5)
+                        }
+                    }
+                    
+                })
+                Button(action: {
+                    showingInspector.toggle()
+                }, label: {
+                    Label("Toggle inspector", systemImage: "slider.horizontal.3")
+                })
+            }
+    }
+    
+    func snapshot() {
+        Task {
+            appSettings.isExporting = true
+            let renderer = ImageRenderer(content: CanvasView().foregroundStyle(colorScheme == .light ? .black : .white))
+            renderer.scale = 2
+            // make sure and use the correct display scale for this device
+            if let nsImage = renderer.nsImage {
+                
+                let pasteboard = NSPasteboard.general
+                pasteboard.clearContents()
+                pasteboard.writeObjects([nsImage])
+                
+            } else {
+                print("Error rendering image")
+            }
+            appSettings.isExporting = false
+        }
+    }
+    
+    func exportGif() {
+        Task {
+            appSettings.isExporting = true
+            var frames: [CGImage] = []
+            for frame in appSettings.gifFrames ?? [] {
+                let renderer = ImageRenderer(content: CanvasView(frame).foregroundStyle(colorScheme == .light ? .black : .white))
+                renderer.scale = 1
+                
+                if let cgImage = renderer.cgImage {
+                    frames.append(cgImage)
+                }
+            }
+            let exportPath: URL = getDocumentsDirectory().appendingPathComponent("ColorfulBackgrounds-GIF_Export.gif")
+            animatedGif(from: frames, to: exportPath, speed: appSettings.gifSpeed/100)
+            let pasteboard = NSPasteboard.general
+            pasteboard.clearContents()
+            pasteboard.setString(exportPath.path(), forType: .fileURL)
+            appSettings.isExporting = false
+        }
+    }
+}
+
+
+struct ContentVieww: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment var appSettings: AppSettings
+    
     @State var colorsView: ColorsView? = nil
     @State var model = "default"
     @State var models: [String] = ["default"]
@@ -45,24 +137,19 @@ struct ContentView: View {
     var body: some View {
         VStack {
             if colorsView != nil {
-                if gif != nil {
-                    ZStack {
-                        colorsView
-                            .frame(width: CGFloat(width), height: CGFloat(height))
-                            .cornerRadius(roundedCorners ? 20 : 0)
-                            .clipped()
-                        gif
-                            .frame(width: CGFloat(Double(width)*gifSize), height: CGFloat(Double(height)*gifSize))
-                    }
-                    
-                } else {
-                    ZStack {
-                        colorsView
-                            .frame(width: CGFloat(width), height: CGFloat(height))
-                            .cornerRadius(roundedCorners ? 20 : 0)
-                            .clipped()
-                        if titleText != "" {
-                            VStack {
+                ZStack {
+                    colorsView
+                        .frame(width: CGFloat(width), height: CGFloat(height))
+                        .cornerRadius(roundedCorners ? 20 : 0)
+                        .clipped()
+                    if titleText != "" {
+                        VStack {
+                            if gif != nil {
+                                gif
+                                    .frame(width: CGFloat(Double(width)*gifSize), height: CGFloat(Double(height)*gifSize))
+                            }
+                            Spacer(minLength: .zero)
+                            Group {
                                 Text(titleText)
                                     .font(.system(size: subtitleText != "" ? max(Double(height)/5, Double(height)/5) : max(Double(height)/3, Double(height)/3)))
                                     .bold()
@@ -73,11 +160,17 @@ struct ContentView: View {
                                         .multilineTextAlignment(.center)
                                 }
                             }.padding()
+                        }.padding()
+                    } else {
+                        if gif != nil {
+                            gif
+                                .frame(width: CGFloat(Double(width)*gifSize), height: CGFloat(Double(height)*gifSize))
                         }
-                    }.frame(width: CGFloat(width), height: CGFloat(height))
-                        .cornerRadius(roundedCorners ? 20 : 0)
-                        .clipped()
-                }
+                    }
+                }.frame(width: CGFloat(width), height: CGFloat(height))
+                    .cornerRadius(roundedCorners ? 20 : 0)
+                    .clipped()
+                
                 
                 
             }
@@ -125,7 +218,7 @@ struct ContentView: View {
                             VStack {
                                 Form {
                                     Section("Values") {
-                                        Slider(value: $gifSpeed, in: 0.0001...0.1, label: {
+                                        Slider(value: $gifSpeed, in: 1...2, label: {
                                             Label("Frame time", systemImage: "circle")
                                                 .labelStyle(.titleOnly)
                                                 .frame(width: 70, alignment: .leading)
@@ -150,36 +243,35 @@ struct ContentView: View {
                             }.frame(width: 300, height: 170)
                         }
                     }
-                } else {
-                    ToolbarItem() {
-                        Button("Text settings") {
-                            textPopout.toggle()
-                        }.popover(isPresented: $textPopout) {
-                            VStack {
-                                Form {
-                                    Section("Values") {
-                                        TextField("Title", text: $titleText)
-                                            .controlSize(.large)
-                                        
-                                    }.toggleStyle(.switch)
-                                        .formStyle(.grouped)
-                                    Section("Subtitle") {
-                                        TextEditor(text: $subtitleText)
-                                            .controlSize(.large)
-                                            .backgroundStyle(.clear)
-//                                        TextField("Subtitle", text: $subtitleText)
-//                                            .controlSize(.large)
-                                        Button("Clear texts") {
-                                            titleText = ""
-                                            subtitleText = ""
-                                            gifPopout.toggle()
-                                        }
-                                    }.toggleStyle(.switch)
-                                        .formStyle(.grouped)
+                }
+                ToolbarItem() {
+                    Button("Text settings") {
+                        textPopout.toggle()
+                    }.popover(isPresented: $textPopout) {
+                        VStack {
+                            Form {
+                                Section("Values") {
+                                    TextField("Title", text: $titleText)
+                                        .controlSize(.large)
+                                    
                                 }.toggleStyle(.switch)
                                     .formStyle(.grouped)
-                            }.frame(width: 300, height: 220)
-                        }
+                                Section("Subtitle") {
+                                    TextEditor(text: $subtitleText)
+                                        .controlSize(.large)
+                                        .backgroundStyle(.clear)
+//                                        TextField("Subtitle", text: $subtitleText)
+//                                            .controlSize(.large)
+                                    Button("Clear texts") {
+                                        titleText = ""
+                                        subtitleText = ""
+                                        gifPopout.toggle()
+                                    }
+                                }.toggleStyle(.switch)
+                                    .formStyle(.grouped)
+                            }.toggleStyle(.switch)
+                                .formStyle(.grouped)
+                        }.frame(width: 300, height: 220)
                     }
                 }
                 
@@ -246,7 +338,7 @@ struct ContentView: View {
                                         gifExportState = .exportFile
                                         do {
                                             let exportPath: URL = getDocumentsDirectory().appendingPathComponent("ColorfulBackgrounds-GIF_Export.gif")
-                                            animatedGif(from: frames, to: exportPath, speed: gifSpeed)
+                                            animatedGif(from: frames, to: exportPath, speed: gifSpeed/100)
                                             let pasteboard = NSPasteboard.general
                                             pasteboard.clearContents()
                                             pasteboard.setString(exportPath.path(), forType: .fileURL)
@@ -266,33 +358,44 @@ struct ContentView: View {
                             }
                         } else {
                             let renderer = ImageRenderer(content: {
+                                
                                 ZStack {
                                     colorsView
                                         .frame(width: CGFloat(width), height: CGFloat(height))
                                         .cornerRadius(roundedCorners ? 20 : 0)
                                         .clipped()
-                                    if gif == nil {
+                                    if titleText != "" {
                                         VStack {
+                                            if gif != nil {
+                                                Image(nsImage: gifFrames![0])
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: CGFloat(Double(width)*gifSize), height: CGFloat(Double(height)*gifSize))
+                                            }
                                             Text(titleText)
                                                 .font(.system(size: subtitleText != "" ? max(Double(height)/5, Double(height)/5) : max(Double(height)/3, Double(height)/3)))
                                                 .bold()
                                                 .multilineTextAlignment(.center)
-                                                .foregroundColor(.white)
+                                                .foregroundStyle(colorScheme == .dark ? .white : .black)
                                             if subtitleText != "" {
                                                 Text(subtitleText)
                                                     .font(.system(size: 25))
                                                     .multilineTextAlignment(.center)
-                                                    .foregroundColor(.white)
+                                                    .foregroundStyle(colorScheme == .dark ? .white : .black)
                                             }
                                         }.padding()
-                                    } else if gifFrames != nil {
-                                        Image(nsImage: gifFrames![0])
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: CGFloat(Double(width)*gifSize), height: CGFloat(Double(height)*gifSize))
+                                    } else {
+                                        if gif != nil {
+                                            Image(nsImage: gifFrames![0])
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: CGFloat(Double(width)*gifSize), height: CGFloat(Double(height)*gifSize))
+                                        }
                                     }
-                                    
-                                }
+                                }.frame(width: CGFloat(width), height: CGFloat(height))
+                                    .cornerRadius(roundedCorners ? 20 : 0)
+                                    .clipped()
+                                
                             }())
                             renderer.scale = 2.0
                             // make sure and use the correct display scale for this device
@@ -313,35 +416,106 @@ struct ContentView: View {
                             .stroke(Color.clear)
                             .background(Color.black.opacity(0.2).cornerRadius(8)))
                         .buttonStyle(PlainButtonStyle())
-                    
-                    Button(action: {
-                        var tempColors: [Color] = []
-                        
-                        let body: [String:Any] = [
-                            "model": model
-                        ]
-                        let url = URL(string: "http://colormind.io/api/")!
-                        let request = AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default)
-                            .validate()
-                            .responseString() { response in
-                                if response.data != nil {
-                                    do {
-                                        var json = try? JSON(data: response.data!)
-                                        for color in json!["result"].arrayValue {
-                                            
-                                            let color = NSColor(red: CGFloat(color[0].floatValue), green: CGFloat(color[1].floatValue), blue: CGFloat(color[2].floatValue), alpha: CGFloat(1))
-            //                                let color = Color(red: color[0].doubleValue, green: color[1].doubleValue, blue: color[2].doubleValue)
-                                            tempColors.append(Color(nsColor: color))
+                    if gif != nil {
+                        Menu("Reroll", content: {
+                            Button("From IA") {
+                                var tempColors: [Color] = []
+                                
+                                let body: [String:Any] = [
+                                    "model": model
+                                ]
+                                let url = URL(string: "http://colormind.io/api/")!
+                                let request = AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default)
+                                    .validate()
+                                    .responseString() { response in
+                                        if response.data != nil {
+                                            do {
+                                                var json = try? JSON(data: response.data!)
+                                                for color in json!["result"].arrayValue {
+                                                    
+                                                    let color = NSColor(red: CGFloat(color[0].floatValue), green: CGFloat(color[1].floatValue), blue: CGFloat(color[2].floatValue), alpha: CGFloat(1))
+                    //                                let color = Color(red: color[0].doubleValue, green: color[1].doubleValue, blue: color[2].doubleValue)
+                                                    tempColors.append(Color(nsColor: color))
+                                                }
+                                            }
+                                            colors = tempColors
+                                        } else {
+                                            print(response.error)
                                         }
                                     }
-                                    colors = tempColors
-                                } else {
-                                    print(response.error)
-                                }
                             }
-                    }, label: {
-                        Label("Reroll", systemImage: "arrow.clockwise").labelStyle(.iconOnly)
-                    }).controlSize(.large)
+                            
+                            Button("From GIF") {
+                                var tempColors: [Color] = []
+                                
+                                for color in gifFrames![0].dominantColors() {
+                                    tempColors.append(Color(nsColor: color))
+                                }
+                                colors = tempColors
+                            }
+                        }, primaryAction: {
+                            var tempColors: [Color] = []
+                            
+                            let body: [String:Any] = [
+                                "model": model
+                            ]
+                            let url = URL(string: "http://colormind.io/api/")!
+                            let request = AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default)
+                                .validate()
+                                .responseString() { response in
+                                    if response.data != nil {
+                                        do {
+                                            var json = try? JSON(data: response.data!)
+                                            for color in json!["result"].arrayValue {
+                                                
+                                                let color = NSColor(red: CGFloat(color[0].floatValue), green: CGFloat(color[1].floatValue), blue: CGFloat(color[2].floatValue), alpha: CGFloat(1))
+                //                                let color = Color(red: color[0].doubleValue, green: color[1].doubleValue, blue: color[2].doubleValue)
+                                                tempColors.append(Color(nsColor: color))
+                                            }
+                                        }
+                                        colors = tempColors
+                                    } else {
+                                        print(response.error)
+                                    }
+                                }
+                        }).menuStyle(.borderlessButton)
+                            .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(.secondary)
+                                        .opacity(0.7)
+                                )
+                            .fixedSize()
+                    } else {
+                        Button(action: {
+                            var tempColors: [Color] = []
+                            
+                            let body: [String:Any] = [
+                                "model": model
+                            ]
+                            let url = URL(string: "http://colormind.io/api/")!
+                            let request = AF.request(url, method: .post, parameters: body, encoding: JSONEncoding.default)
+                                .validate()
+                                .responseString() { response in
+                                    if response.data != nil {
+                                        do {
+                                            var json = try? JSON(data: response.data!)
+                                            for color in json!["result"].arrayValue {
+                                                
+                                                let color = NSColor(red: CGFloat(color[0].floatValue), green: CGFloat(color[1].floatValue), blue: CGFloat(color[2].floatValue), alpha: CGFloat(1))
+                //                                let color = Color(red: color[0].doubleValue, green: color[1].doubleValue, blue: color[2].doubleValue)
+                                                tempColors.append(Color(nsColor: color))
+                                            }
+                                        }
+                                        colors = tempColors
+                                    } else {
+                                        print(response.error)
+                                    }
+                                }
+                        }, label: {
+                            Label("Reroll", systemImage: "arrow.clockwise").labelStyle(.iconOnly)
+                        }).controlSize(.large)
+                    }
+                    
                 }
                 
             }
@@ -401,10 +575,8 @@ struct ColorsView: View {
                         .saturation(2)
                         .scaleEffect(1.5)
                         .blur(radius: 100)
-                    Image("noise")
-                        .resizable(resizingMode: .tile)
-                        .scaledToFill()
-                        .opacity(0.04)
+                    SKNoiseTexture()
+                        .opacity(0.08)
                     
                 }
             }

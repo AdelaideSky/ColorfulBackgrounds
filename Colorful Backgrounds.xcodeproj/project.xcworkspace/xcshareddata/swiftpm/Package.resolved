@@ -10,12 +10,30 @@
       }
     },
     {
+      "identity" : "dominantcolor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Adelenade/DominantColor",
+      "state" : {
+        "branch" : "master",
+        "revision" : "32bc520b394219e3d0c5926793ec1e8f2391af12"
+      }
+    },
+    {
       "identity" : "gifimage",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/igorcferreira/GIFImage",
       "state" : {
         "revision" : "1b3bb8976ddcd8f5c7a5565f29110a4d2db34c7f",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "skykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AdelaideSky/SkyKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0b052de21e59342d9e66074f16fbfbda0ed4e6db"
       }
     },
     {

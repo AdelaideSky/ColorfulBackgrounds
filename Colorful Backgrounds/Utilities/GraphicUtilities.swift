@@ -96,6 +96,7 @@ func animatedGif(from images: [CGImage], to fileUrl: URL, speed: Double) {
         }
     }
 }
+
 extension NSImage {
     @objc var CGImage: CGImage? {
        get {

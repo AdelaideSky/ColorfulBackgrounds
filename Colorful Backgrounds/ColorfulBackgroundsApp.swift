@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct ColorfulBackgroundsApp: App {
     var body: some Scene {
-        WindowGroup {
+        Window("Colorful Backgrounds", id: "main") {
             ContentView()
                 .frame(minWidth: 720, minHeight: 200)
         }

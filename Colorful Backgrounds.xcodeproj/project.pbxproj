@@ -8,10 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		701DF1AC29B7DA36002CC84A /* GIFImage in Frameworks */ = {isa = PBXBuildFile; productRef = 701DF1AB29B7DA36002CC84A /* GIFImage */; };
+		7020B2212A4F5D9500044AA8 /* SkyKit_Design in Frameworks */ = {isa = PBXBuildFile; productRef = 7020B2202A4F5D9500044AA8 /* SkyKit_Design */; };
+		7020B2242A4F67EC00044AA8 /* DominantColor in Frameworks */ = {isa = PBXBuildFile; productRef = 7020B2232A4F67EC00044AA8 /* DominantColor */; };
 		703D896329B690B600D9AAAB /* ColorfulBackgroundsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703D896229B690B600D9AAAB /* ColorfulBackgroundsApp.swift */; };
 		703D896529B690B600D9AAAB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703D896429B690B600D9AAAB /* ContentView.swift */; };
 		703D896729B690B800D9AAAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 703D896629B690B800D9AAAB /* Assets.xcassets */; };
 		703D896A29B690B800D9AAAB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 703D896929B690B800D9AAAB /* Preview Assets.xcassets */; };
+		70609EED2A507EC9001C15F7 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70609EEC2A507EC9001C15F7 /* AppSettings.swift */; };
+		70609EF22A508853001C15F7 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70609EF12A508853001C15F7 /* InspectorView.swift */; };
+		70609EF42A508876001C15F7 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70609EF32A508876001C15F7 /* CanvasView.swift */; };
+		70609EF62A5088A0001C15F7 /* CanvasBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70609EF52A5088A0001C15F7 /* CanvasBackgroundView.swift */; };
 		70D8ECAE29B9132F00595A37 /* GraphicUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D8ECAD29B9132F00595A37 /* GraphicUtilities.swift */; };
 		70DAE1B829B7A67A00040E67 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 70DAE1B729B7A67A00040E67 /* Alamofire */; };
 		70DAE1BB29B7A68300040E67 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 70DAE1BA29B7A68300040E67 /* SwiftyJSON */; };
@@ -25,6 +31,10 @@
 		703D896929B690B800D9AAAB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		703D896B29B690B800D9AAAB /* ColorfulBackgrounds.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ColorfulBackgrounds.entitlements; sourceTree = "<group>"; };
 		703D897A29B6999400D9AAAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		70609EEC2A507EC9001C15F7 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		70609EF12A508853001C15F7 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
+		70609EF32A508876001C15F7 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		70609EF52A5088A0001C15F7 /* CanvasBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasBackgroundView.swift; sourceTree = "<group>"; };
 		70D8ECAD29B9132F00595A37 /* GraphicUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicUtilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -34,8 +44,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				701DF1AC29B7DA36002CC84A /* GIFImage in Frameworks */,
+				7020B2212A4F5D9500044AA8 /* SkyKit_Design in Frameworks */,
 				70DAE1BB29B7A68300040E67 /* SwiftyJSON in Frameworks */,
 				70DAE1B829B7A67A00040E67 /* Alamofire in Frameworks */,
+				7020B2242A4F67EC00044AA8 /* DominantColor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,13 +73,10 @@
 		703D896129B690B600D9AAAB /* Colorful Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
-				70F186CA29BA5C7F001CDFF8 /* Utils */,
-				70F186C929BA5C77001CDFF8 /* ViewModels */,
-				70F186C829BA5C72001CDFF8 /* Views */,
+				70609EF02A50883E001C15F7 /* Utilities */,
+				70609EEA2A507EA1001C15F7 /* Features */,
 				703D897A29B6999400D9AAAB /* Info.plist */,
 				703D896229B690B600D9AAAB /* ColorfulBackgroundsApp.swift */,
-				703D896429B690B600D9AAAB /* ContentView.swift */,
-				70D8ECAD29B9132F00595A37 /* GraphicUtilities.swift */,
 				703D896629B690B800D9AAAB /* Assets.xcassets */,
 				703D896B29B690B800D9AAAB /* ColorfulBackgrounds.entitlements */,
 				703D896829B690B800D9AAAB /* Preview Content */,
@@ -83,25 +92,48 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		70F186C829BA5C72001CDFF8 /* Views */ = {
+		70609EEA2A507EA1001C15F7 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				703D896429B690B600D9AAAB /* ContentView.swift */,
+				70609EEF2A508830001C15F7 /* Inspector */,
+				70609EEE2A50882A001C15F7 /* Canvas */,
+				70609EEB2A507EBE001C15F7 /* Settings */,
 			);
-			path = Views;
+			path = Features;
 			sourceTree = "<group>";
 		};
-		70F186C929BA5C77001CDFF8 /* ViewModels */ = {
+		70609EEB2A507EBE001C15F7 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				70609EEC2A507EC9001C15F7 /* AppSettings.swift */,
 			);
-			path = ViewModels;
+			path = Settings;
 			sourceTree = "<group>";
 		};
-		70F186CA29BA5C7F001CDFF8 /* Utils */ = {
+		70609EEE2A50882A001C15F7 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
+				70609EF32A508876001C15F7 /* CanvasView.swift */,
+				70609EF52A5088A0001C15F7 /* CanvasBackgroundView.swift */,
 			);
-			path = Utils;
+			path = Canvas;
+			sourceTree = "<group>";
+		};
+		70609EEF2A508830001C15F7 /* Inspector */ = {
+			isa = PBXGroup;
+			children = (
+				70609EF12A508853001C15F7 /* InspectorView.swift */,
+			);
+			path = Inspector;
+			sourceTree = "<group>";
+		};
+		70609EF02A50883E001C15F7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				70D8ECAD29B9132F00595A37 /* GraphicUtilities.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,6 +156,8 @@
 				70DAE1B729B7A67A00040E67 /* Alamofire */,
 				70DAE1BA29B7A68300040E67 /* SwiftyJSON */,
 				701DF1AB29B7DA36002CC84A /* GIFImage */,
+				7020B2202A4F5D9500044AA8 /* SkyKit_Design */,
+				7020B2232A4F67EC00044AA8 /* DominantColor */,
 			);
 			productName = ColorImageGenerator;
 			productReference = 703D895F29B690B600D9AAAB /* Colorful Backgrounds.app */;
@@ -157,6 +191,8 @@
 				70DAE1B629B7A67A00040E67 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				70DAE1B929B7A68300040E67 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				701DF1AA29B7DA36002CC84A /* XCRemoteSwiftPackageReference "GIFImage" */,
+				7020B21F2A4F5D9500044AA8 /* XCRemoteSwiftPackageReference "SkyKit" */,
+				7020B2222A4F67EC00044AA8 /* XCRemoteSwiftPackageReference "DominantColor" */,
 			);
 			productRefGroup = 703D896029B690B600D9AAAB /* Products */;
 			projectDirPath = "";
@@ -186,6 +222,10 @@
 			files = (
 				70D8ECAE29B9132F00595A37 /* GraphicUtilities.swift in Sources */,
 				703D896529B690B600D9AAAB /* ContentView.swift in Sources */,
+				70609EF42A508876001C15F7 /* CanvasView.swift in Sources */,
+				70609EF62A5088A0001C15F7 /* CanvasBackgroundView.swift in Sources */,
+				70609EED2A507EC9001C15F7 /* AppSettings.swift in Sources */,
+				70609EF22A508853001C15F7 /* InspectorView.swift in Sources */,
 				703D896329B690B600D9AAAB /* ColorfulBackgroundsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,6 +369,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.adesky.ColorfulBackgrounds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -360,6 +401,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.adesky.ColorfulBackgrounds;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -400,6 +442,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		7020B21F2A4F5D9500044AA8 /* XCRemoteSwiftPackageReference "SkyKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AdelaideSky/SkyKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		7020B2222A4F67EC00044AA8 /* XCRemoteSwiftPackageReference "DominantColor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Adelenade/DominantColor";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		70DAE1B629B7A67A00040E67 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -423,6 +481,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 701DF1AA29B7DA36002CC84A /* XCRemoteSwiftPackageReference "GIFImage" */;
 			productName = GIFImage;
+		};
+		7020B2202A4F5D9500044AA8 /* SkyKit_Design */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7020B21F2A4F5D9500044AA8 /* XCRemoteSwiftPackageReference "SkyKit" */;
+			productName = SkyKit_Design;
+		};
+		7020B2232A4F67EC00044AA8 /* DominantColor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7020B2222A4F67EC00044AA8 /* XCRemoteSwiftPackageReference "DominantColor" */;
+			productName = DominantColor;
 		};
 		70DAE1B729B7A67A00040E67 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

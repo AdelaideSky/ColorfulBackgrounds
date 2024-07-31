@@ -143,6 +143,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 703D896E29B690B800D9AAAB /* Build configuration list for PBXNativeTarget "Colorful Backgrounds" */;
 			buildPhases = (
+				4CB3EE7B2C5A57F200FEEF86 /* Run SwiftFormat */,
 				703D895B29B690B600D9AAAB /* Sources */,
 				703D895C29B690B600D9AAAB /* Frameworks */,
 				703D895D29B690B600D9AAAB /* Resources */,
@@ -214,6 +215,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4CB3EE7B2C5A57F200FEEF86 /* Run SwiftFormat */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftFormat";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Default Homebrew installation path on Intel-based Macs\nHOMEBREW_INTEL_PATH=\"/usr/local/bin/swiftformat\"\n\n# Default Homebrew installation path on Apple Silicon Macs\nHOMEBREW_ARM_PATH=\"/opt/homebrew/bin/swiftformat\"\n\n# Determine the architecture of the machine (arm64 or x86_64)\nARCH=$(uname -m)\n\n# Set the Homebrew path based on the architecture\nif [ \"$ARCH\" = \"arm64\" ]; then\n    SWIFTFORMAT_PATH=\"$HOMEBREW_ARM_PATH\"\nelse\n    SWIFTFORMAT_PATH=\"$HOMEBREW_INTEL_PATH\"\nfi\n\n# Check if SwiftFormat is installed via Homebrew\nif [ -x \"$SWIFTFORMAT_PATH\" ]; then\n    \"$SWIFTFORMAT_PATH\" .\nelse\n    echo \"warning: SwiftFormat not installed via Homebrew or not found in expected paths\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		703D895B29B690B600D9AAAB /* Sources */ = {

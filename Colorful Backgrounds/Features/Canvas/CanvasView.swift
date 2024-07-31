@@ -5,72 +5,79 @@
 //  Created by Adélaïde Sky on 01/07/2023.
 //
 
-import SwiftUI
-import SkyKit_Design
 import GIFImage
+import SkyKit_Design
+import SwiftUI
 
 struct CanvasView: View {
     @ObservedObject var appSettings: AppSettings = .shared
     @ObservedObject var colors: SKColorMind = .shared
-    
+
     var image: NSImage? = nil
-    
-    
+
     init() {}
-    
+
     init(_ nsimage: NSImage) {
-        image = nsimage
+        self.image = nsimage
     }
 
     var body: some View {
-        VStack {
-            ZStack {
-                CanvasBackgroundView(colors: $colors.palette)
-                VStack {
-                    Spacer()
-                    if appSettings.titleText != "" {
-                        VStack {
-                            if appSettings.gif != nil {
-                                Group {
-                                    if image == nil {
-                                        appSettings.gif
-                                    } else {
-                                        Image(nsImage: image!)
-                                            .resizable()
-                                            .scaledToFit()
-                                    }
-                                }.frame(width: CGFloat(Double(appSettings.width)*appSettings.gifSize), height: CGFloat(Double(appSettings.height)*appSettings.gifSize))
-                            }
-                            Spacer(minLength: .zero)
-                            Group {
-                                Text(appSettings.titleText)
-                                    .font(.system(size: appSettings.subtitleText != "" ? max(Double(appSettings.height)/5, Double(appSettings.height)/5) : max(Double(appSettings.height)/3, Double(appSettings.height)/3)))
-                                    .bold()
-                                    .multilineTextAlignment(.center)
-                                if appSettings.subtitleText != "" {
-                                    Text(appSettings.subtitleText)
-                                        .font(.system(size: 25))
-                                        .multilineTextAlignment(.center)
-                                }
-                            }
-                            Spacer(minLength: .zero)
-                        }.padding()
-                    } else {
-                        Group {
-                            if image == nil {
-                                appSettings.gif
-                            } else {
-                                Image(nsImage: image!)
-                                    .resizable()
-                                    .scaledToFit()
-                            }
-                        }.frame(width: CGFloat(Double(appSettings.width)*appSettings.gifSize), height: CGFloat(Double(appSettings.height)*appSettings.gifSize))
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                ZStack {
+                    CanvasBackgroundView(colors: $colors.palette)
+                    VStack {
+                        Spacer()
+                        if appSettings.titleText != "" {
+                            VStack {
+                                displayImage(geometry: geometry)
+                                Spacer(minLength: .zero)
+                                titleAndSubtitle()
+                            }.padding()
+                        } else {
+                            displayImage(geometry: geometry)
+                        }
+                        Spacer()
                     }
-                    Spacer()
                 }
-            }.frame(width: CGFloat(appSettings.width), height: CGFloat(appSettings.height))
+                .frame(width: min(CGFloat(appSettings.width), geometry.size.width),
+                       height: min(CGFloat(appSettings.height), geometry.size.height))
                 .cornerRadius(appSettings.roundedCorners ? 20 : 0)
                 .clipped()
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    @ViewBuilder
+    private func displayImage(geometry: GeometryProxy) -> some View {
+        Group {
+            if image == nil {
+                appSettings.gif
+            } else {
+                Image(nsImage: image!)
+                    .resizable()
+                    .scaledToFit()
+            }
+        }
+        .frame(width: min(CGFloat(Double(appSettings.width) * appSettings.gifSize), geometry.size.width),
+               height: min(CGFloat(Double(appSettings.height) * appSettings.gifSize), geometry.size.height))
+    }
+
+    @ViewBuilder
+    private func titleAndSubtitle() -> some View {
+        Group {
+            Text(appSettings.titleText)
+                .font(.system(size: appSettings.subtitleText != "" ? max(Double(appSettings.height) / 5, Double(appSettings.height) / 5) : max(Double(appSettings.height) / 3, Double(appSettings.height) / 3)))
+                .bold()
+                .multilineTextAlignment(.center)
+            if appSettings.subtitleText != "" {
+                Text(appSettings.subtitleText)
+                    .font(.system(size: 25))
+                    .multilineTextAlignment(.center)
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ struct InspectorView: View {
         Section {
             Picker("Model", selection: $colors.model) {
                 ForEach(colors.models, id: \.self) { model in
-                    Text(model).tag(model)
+                    Text(model.capitalized.replacingOccurrences(of: "_", with: " ")).tag(model)
                 }
             }
             Button("Shuffle") { colors.shufflePalette() }

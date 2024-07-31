@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4CB3EE7E2C5A88AF00FEEF86 /* SkyKit_Design in Frameworks */ = {isa = PBXBuildFile; productRef = 4CB3EE7D2C5A88AF00FEEF86 /* SkyKit_Design */; };
 		701DF1AC29B7DA36002CC84A /* GIFImage in Frameworks */ = {isa = PBXBuildFile; productRef = 701DF1AB29B7DA36002CC84A /* GIFImage */; };
-		7020B2212A4F5D9500044AA8 /* SkyKit_Design in Frameworks */ = {isa = PBXBuildFile; productRef = 7020B2202A4F5D9500044AA8 /* SkyKit_Design */; };
 		7020B2242A4F67EC00044AA8 /* DominantColor in Frameworks */ = {isa = PBXBuildFile; productRef = 7020B2232A4F67EC00044AA8 /* DominantColor */; };
 		703D896329B690B600D9AAAB /* ColorfulBackgroundsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703D896229B690B600D9AAAB /* ColorfulBackgroundsApp.swift */; };
 		703D896529B690B600D9AAAB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703D896429B690B600D9AAAB /* ContentView.swift */; };
@@ -44,10 +44,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				701DF1AC29B7DA36002CC84A /* GIFImage in Frameworks */,
-				7020B2212A4F5D9500044AA8 /* SkyKit_Design in Frameworks */,
 				70DAE1BB29B7A68300040E67 /* SwiftyJSON in Frameworks */,
 				70DAE1B829B7A67A00040E67 /* Alamofire in Frameworks */,
 				7020B2242A4F67EC00044AA8 /* DominantColor in Frameworks */,
+				4CB3EE7E2C5A88AF00FEEF86 /* SkyKit_Design in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,8 +157,8 @@
 				70DAE1B729B7A67A00040E67 /* Alamofire */,
 				70DAE1BA29B7A68300040E67 /* SwiftyJSON */,
 				701DF1AB29B7DA36002CC84A /* GIFImage */,
-				7020B2202A4F5D9500044AA8 /* SkyKit_Design */,
 				7020B2232A4F67EC00044AA8 /* DominantColor */,
+				4CB3EE7D2C5A88AF00FEEF86 /* SkyKit_Design */,
 			);
 			productName = ColorImageGenerator;
 			productReference = 703D895F29B690B600D9AAAB /* Colorful Backgrounds.app */;
@@ -192,8 +192,8 @@
 				70DAE1B629B7A67A00040E67 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				70DAE1B929B7A68300040E67 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				701DF1AA29B7DA36002CC84A /* XCRemoteSwiftPackageReference "GIFImage" */,
-				7020B21F2A4F5D9500044AA8 /* XCRemoteSwiftPackageReference "SkyKit" */,
 				7020B2222A4F67EC00044AA8 /* XCRemoteSwiftPackageReference "DominantColor" */,
+				4CB3EE7C2C5A88AF00FEEF86 /* XCRemoteSwiftPackageReference "SkyKit" */,
 			);
 			productRefGroup = 703D896029B690B600D9AAAB /* Products */;
 			projectDirPath = "";
@@ -457,20 +457,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4CB3EE7C2C5A88AF00FEEF86 /* XCRemoteSwiftPackageReference "SkyKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AdelaideSky/SkyKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		701DF1AA29B7DA36002CC84A /* XCRemoteSwiftPackageReference "GIFImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/igorcferreira/GIFImage";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
-			};
-		};
-		7020B21F2A4F5D9500044AA8 /* XCRemoteSwiftPackageReference "SkyKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AdelaideSky/SkyKit";
-			requirement = {
-				branch = main;
-				kind = branch;
 			};
 		};
 		7020B2222A4F67EC00044AA8 /* XCRemoteSwiftPackageReference "DominantColor" */ = {
@@ -500,15 +500,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4CB3EE7D2C5A88AF00FEEF86 /* SkyKit_Design */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CB3EE7C2C5A88AF00FEEF86 /* XCRemoteSwiftPackageReference "SkyKit" */;
+			productName = SkyKit_Design;
+		};
 		701DF1AB29B7DA36002CC84A /* GIFImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 701DF1AA29B7DA36002CC84A /* XCRemoteSwiftPackageReference "GIFImage" */;
 			productName = GIFImage;
-		};
-		7020B2202A4F5D9500044AA8 /* SkyKit_Design */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7020B21F2A4F5D9500044AA8 /* XCRemoteSwiftPackageReference "SkyKit" */;
-			productName = SkyKit_Design;
 		};
 		7020B2232A4F67EC00044AA8 /* DominantColor */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -6,35 +6,36 @@
 //
 
 import Foundation
-import SwiftUI
-import SkyKit_Design
 import GIFImage
+import SkyKit_Design
+import SwiftUI
 
 class AppSettings: ObservableObject {
-    
-    static var shared: AppSettings = .init()
-        
-    @AppStorage("fr.adesky.colorfulBackgrounds.roundedCorners") var roundedCorners: Bool = true
-    @AppStorage("fr.adesky.colorfulBackgrounds.height") var height: Int = 532
-    @AppStorage("fr.adesky.colorfulBackgrounds.width") var width: Int = 1600
-    @AppStorage("fr.adesky.colorfulBackgrounds.gifSpeed") var gifSpeed: Double = 1.2
-    @AppStorage("fr.adesky.colorfulBackgrounds.gifSize") var gifSize: Double = 0.7
-    @AppStorage("fr.adesky.colorfulBackgrounds.noiseAmount") var noiseAmount: Double = 0.05
-    
-    
-    @Published var gif: GIFImage? = nil
-    @Published var gifFrames: [NSImage]? = nil
-    
-    @Published var noiseTexture: NSImage? = nil
-    
-    @Published var titleText: String = ""
-    @Published var subtitleText: String = ""
-    
-    @Published var gifExportProgress: Double = 100.0
+    static let shared = AppSettings()
+
+    @AppStorage("fr.adesky.colorfulBackgrounds.roundedCorners") var roundedCorners = true
+    @AppStorage("fr.adesky.colorfulBackgrounds.height") var height = 532
+    @AppStorage("fr.adesky.colorfulBackgrounds.width") var width = 1600
+    @AppStorage("fr.adesky.colorfulBackgrounds.gifSpeed") var gifSpeed = 1.2
+    @AppStorage("fr.adesky.colorfulBackgrounds.gifSize") var gifSize = 0.7
+    @AppStorage("fr.adesky.colorfulBackgrounds.noiseAmount") var noiseAmount = 0.05
+
+    @Published var gif: GIFImage?
+    @Published var gifFrames: [NSImage]?
+    @Published var noiseTexture: NSImage?
+    @Published var titleText = ""
+    @Published var subtitleText = ""
+    @Published var gifExportProgress = 100.0
     @Published var showExportSheet = false
     @Published var isExporting = false
-    
+
     init() {
-        SKNoiseGenerator().image(width: width, height: height) { self.noiseTexture = $0 }
+        generateInitialNoiseTexture()
+    }
+
+    private func generateInitialNoiseTexture() {
+        SKNoiseGenerator().image(width: width, height: height) { [weak self] image in
+            self?.noiseTexture = image
+        }
     }
 }
